@@ -9,6 +9,7 @@
 #   - What type of error is it?
 #   - Which line causes it?
 #   - Write a comment below explaining the cause.
+# line 35 causes the error because it attempts to convert a non-numeric string (like 'N/A' or 'sensor_error') to a float, which raises a ValueError.    
 #
 # YOUR TASK (Task 3): Wrap the risky conversion in try/except.
 #   - Catch the specific error type (not bare except:)
@@ -32,9 +33,12 @@ readings = ['72.1', '68.5', 'N/A', '74.0', 'sensor_error', '69.3']
 valid = []
 
 for i, r in enumerate(readings):
-    temp = float(r)           # <-- this line crashes on bad strings
-    print(f'Reading [{i}]: {temp}')
-    valid.append(temp)
+    try:
+        temp = float(r) # <-- this line crashes on bad strings
+        print(f'Reading [{i}]: {temp}')
+        valid.append(temp)
+    except ValueError:
+        print(f"[index {i}] Skipped bad reading: '{r}'")
 
 average = sum(valid) / len(valid)
 print(f'Average of valid readings: {round(average, 2)}')
